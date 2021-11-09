@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Tournament 1</title>
+		<style>
+			th {
+				color: white;
+			}
+		</style>
+	</head>
+	<body></body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Welcome to Symfony!</title>
+		<link rel="stylesheet" href="{{ asset('stylesheet.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('main.css') }}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	</head>
+	<body>
+		<script src="{{ asset('ajax.js') }}" defer></script>
+		<footer>
+			<div class="limiter">
+				<div class="container-table100">
+					<div class="wrap-table100">
+						<div class="table100">
+							<br><br>
+							{% if ent == 'Movie' %}
+								<form id="editForm">
+									<table>
+										<thead>
+											<th>
+												<a style="color:white" href="{{ path('home') }}">&lt;</a>
+												Edit movie
+											</th>
+											<th></th>
+										</thead>
+										<tr>
+											<td>
+												Name
+											</td>
+											<td>
+												<input type="text" name="MovieName" value="{{elem.name}}"/>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Release Year
+											</td>
+											<td>
+												<input type="number" min="1000" max="2999" step="1" name="MovieYear" value="{{elem.releaseYear}}"/>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<input type="hidden" value="Movie" name="ent">
+												<input type="hidden" value="{{elem.id}}" name="id">
+												<input type="submit" value="Submit" class="editSubmit"/>
+											</td>
+										</tr>
+									</table>
+								</form>
+							{% endif %}
+							{% if ent == 'Quote' %}
+								<form id="editForm">
+									<table>
+										<thead>
+											<th>
+												<a style="color:white" href="{{ path('home') }}">&lt;</a>
+												Edit movie
+											</th>
+											<th></th>
+										</thead>
+										<tr>
+											<td>
+												Text
+											</td>
+											<td>
+												<input type="text" name="QuoteText" value="{{elem.text}}"/>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Character
+											</td>
+											<td>
+												<input type="text" name="QuoteCharacter" value="{{elem.character}}"/>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<input type="hidden" value="Quote" name="ent">
+												<input type="hidden" value="{{elem.id}}" name="id">
+												<input type="submit" value="Submit" class="editSubmit"/>
+											</td>
+										</tr>
+									</table>
+								</form>
+							{% endif %}
+
+						</footer>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Tournament 1</title>
+		<style>
+			th {
+				color: white;
+			}
+		</style>
+	</head>
+	<body></body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Welcome to Symfony!</title>
+		<link rel="stylesheet" href="{{ asset('stylesheet.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('main.css') }}">
+	</head>
+	<body>
+		<header>
+			<h1>
+				Famous Movie Quotes</h1><br>
+			<button id="scrollStart">
+				<b>V</b>
+			</button>
+		</header>
+		<section class="animation">
+			<img class="paper-plane" src="{{ asset('plane.png') }}" alt="Paperplane">
+		</section>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/debug.addIndicators.js" integrity="sha512-mq6TSOBEH8eoYFBvyDQOQf63xgTeAk7ps+MHGLWZ6Byz0BqQzrP+3GIgYL+KvLaWgpL8XgDVbIRYQeLa3Vqu6A==" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js" integrity="sha512-5/OHwmQzDSBS0Ous4/hlYoWLHd06/d2r7LdKZQVBXOA6PvOqWVXtdboiLTU7lQTGyVoKVTNkwi0ol4gHGlw5ww==" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js" integrity="sha512-/8phkpsAzxsbuX18zNkQ2gCq4Q5JsWoPo1jHLDeZorPUHRtx9YJxpdk+os05oDhPJVCNzA2/NMl4rmJyQ+6Fvg==" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TimelineLite.min.js" integrity="sha512-I0VFyPo7hdM7YrEbQ0pvX4bX2904k0+B19u/xBrPrQoMprfcSnIDfGFD8kP52GbAhwtDjkEVhXlQvj8+vkJyew==" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js" integrity="sha512-ht40uOoiTef4nKq0THVzjIGh3VS108J577LVVgNXnQLXza3doXjoM3owin2vd+Hm6w88k12RIrePIVY2WNzz6Q==" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/BezierPlugin.min.js" integrity="sha512-oOy5+mtZRcqjn6b9k4oj+tk2/hVIetzOAM9Y5cndEHgLxiIGavAz1agbHf6JjGzxXZ2SMbu08Uy1DDF0UwA0qQ==" crossorigin="anonymous"></script>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<script src="{{ asset('script.js') }}" defer></script>
+		<script src="{{ asset('ajax.js') }}" defer></script>
+		<footer>
+			<div class="limiter">
+				<div class="container-table100">
+					<div class="wrap-table100">
+						<div class="table100">
+							<br><br>
+							<table>
+								<thead>
+									<th>
+										Movie
+									</th>
+									<th>
+										Quote
+									</th>
+									<th class="column4"></th>
+									<th class="column4">+</th>
+								</thead>
+								{% for item in data %}
+									<tr>
+
+										<td colspan="2">
+											<b>{{item.name}}
+											</b>({{item.releaseYear}})
+										</td>
+										<td class="column4">
+											<a class="deleteBtnM" id="{{ item.id }}">remove</a>
+										</td>
+										<td class="column4">
+											<a class="detail" href="{{ path('edit', {'ent': 'Movie', 'id': item.id}) }}">edit</a>
+										</td>
+									</tr>
+									{% for q in item.getQuotes() %}
+										<tr>
+											<td class="column4"></td>
+											<td>
+												"{{q.text}}"
+												<br>~
+												<b>{{q.character}}</b>
+											</td>
+											<td class="column4">
+												<a class="deleteBtn" id="{{ q.id }}">remove</a>
+											</td>
+											<td class="column4">
+												<a class="detail" href="{{ path('edit', {'ent': 'Quote', 'id': q.id}) }}">edit</a>
+											</td>
+										</tr>
+									{% endfor %}
+								{% endfor %}
+							</table>
+						</footer>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>

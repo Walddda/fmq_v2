@@ -8,13 +8,43 @@ use App\Entity\Movie;
 use App\Entity\Quote;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 class MovieController extends AbstractController
 {
     /**
-     * @Route("/movies", name="movies")
+     * @Route("/del/{ent}", name="delete")
+     */
+    public function ajaxDeleteItemAction(string $ent, HttpFoundationRequest $request)
+    {
+
+        if ($request->isXmlHttpRequest()) {
+            // dd($ent);
+            $id = $request->get('entityId');
+            $em = $this->getDoctrine()->getManager();
+            switch ($ent) {
+                case 'Movie':
+                    $evenement = $em->getRepository(Movie::class)->find($id);
+                    break;
+
+                case 'Quote':
+                    $evenement = $em->getRepository(Quote::class)->find($id);
+                    break;
+            }
+
+            $em->remove($evenement);
+            $em->flush();
+
+
+            return new JsonResponse('good');
+        }
+    }
+
+    /**
+     * @Route("/", name="home")
      */
     public function showAll(): Response
     {
@@ -33,8 +63,10 @@ class MovieController extends AbstractController
         }
 
 
-
-        return new Response($res);
+        return $this->render('index.html.twig', [
+            'data' => $movie,
+        ]);
+        // return new Response($res);
     }
     /**
      * @Route("/movie", name="create_movie")
@@ -47,22 +79,26 @@ class MovieController extends AbstractController
         // $movie = $this->getDoctrine()
         //     ->getRepository(Movie::class)
         //     ->find(1);
-        $movie = new Movie();
-        $movie->setName('abcdef');
-        $movie->setReleaseYear(1234);
-
-        $quote = new Quote();
-        $quote->setText('xxbe or not to be3');
-        $quote->setCharacter('xxKurt3');
-
-        $quote->setMovie($movie);
-
-
         $entityManager = $this->getDoctrine()->getManager();
 
+        for ($j = 0; $j < 5; $j++) {
+            # code...
+            $movie = new Movie();
+            $movie->setName($j . 'movie' . $j);
+            $movie->setReleaseYear(1234);
+
+            $entityManager->persist($movie);
+            for ($i = 0; $i < 3; $i++) {
+                $quote = new Quote();
+                $quote->setText($i . 'quote' . $j);
+                $quote->setCharacter('char' . $j . $i);
+                $quote->setMovie($movie);
+
+                $entityManager->persist($quote);
+            }
+        }
+
         // tell Doctrine you want to (eventually) save the Product (no queries yet)
-        $entityManager->persist($movie);
-        $entityManager->persist($quote);
 
         // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
@@ -93,5 +129,58 @@ class MovieController extends AbstractController
         // or render a template
         // in the template, print things with {{ product.name }}
         // return $this->render('product/show.html.twig', ['product' => $product]);
+    }
+
+    /** 
+     * @Route("/edit/{ent}/{id}", name="edit")
+     */
+    public function edit(string $ent, int $id): Response
+    {
+        switch ($ent) {
+            case 'Movie':
+                $element = $this->getDoctrine()->getRepository(Movie::class)->find($id);
+                break;
+
+            case 'Quote':
+                $element = $this->getDoctrine()->getRepository(Quote::class)->find($id);
+                break;
+        }
+
+        return $this->render('edit.html.twig', [
+            'elem' => $element,
+            'ent' => $ent,
+        ]);
+    }
+
+
+    /** 
+     * @Route("/editSub", name="editSubmit")
+     */
+    public function editSubmit(HttpFoundationRequest $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $ent = $request->request->get('ent');
+        $id = $request->request->get('id');
+        switch ($ent) {
+            case 'Movie':
+                $element = $this->getDoctrine()->getRepository(Movie::class)->find($id);
+
+                $element->setName($request->request->get('MovieName'));
+                $element->setReleaseYear($request->request->get('MovieYear'));
+                $entityManager->persist($element);
+                $entityManager->flush();
+                break;
+
+            case 'Quote':
+                $element = $this->getDoctrine()->getRepository(Quote::class)->find($id);
+
+                $element->setText($request->request->get('QuoteText'));
+                $element->setCharacter($request->request->get('QuoteCharacter'));
+                $entityManager->persist($element);
+                $entityManager->flush();
+                break;
+        }
+
+        return new Response('success');
     }
 }
