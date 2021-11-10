@@ -1,21 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
+
 		<title>Tournament 1</title>
 		<style>
 			th {
 				color: white;
 			}
 		</style>
-	</head>
-	<body></body>
-</html>
-
-
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Welcome to Symfony!</title>
 		<link rel="stylesheet" href="{{ asset('stylesheet.css') }}"/>
 		<link rel="stylesheet" type="text/css" href="{{ asset('main.css') }}">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -28,22 +20,28 @@
 					<div class="wrap-table100">
 						<div class="table100">
 							<br><br>
-							{% if ent == 'Movie' %}
-								<form id="editForm">
-									<table>
-										<thead>
+							<form id="addForm">
+								<input id="ent" type="hidden" value="" name="ent">
+								<table>
+									<thead>
+										<tr>
 											<th>
 												<a style="color:white" href="{{ path('home') }}">&lt;</a>
-												Edit movie
+												Add
+												<span id="movieTrigger" class="trigger">Movie</span>
+												|
+												<span id="quoteTrigger" class="trigger">Quote</span>
 											</th>
 											<th></th>
-										</thead>
+										</tr>
+									</thead>
+									<tbody id="addMovie" class="addBody">
 										<tr>
 											<td>
 												Name
 											</td>
 											<td>
-												<input type="text" name="MovieName" value="{{elem.name}}"/>
+												<input type="text" name="MovieName"/>
 											</td>
 										</tr>
 										<tr>
@@ -51,35 +49,22 @@
 												Release Year
 											</td>
 											<td>
-												<input type="number" min="1000" max="2999" step="1" name="MovieYear" value="{{elem.releaseYear}}"/>
+												<input type="number" min="1000" max="2999" step="1" name="MovieYear"/>
 											</td>
 										</tr>
 										<tr>
 											<td colspan="2">
-												<input type="hidden" value="Movie" name="ent">
-												<input type="hidden" value="{{elem.id}}" name="id">
 												<input type="submit" value="Submit" class="editSubmit"/>
 											</td>
 										</tr>
-									</table>
-								</form>
-							{% endif %}
-							{% if ent == 'Quote' %}
-								<form id="editForm">
-									<table>
-										<thead>
-											<th>
-												<a style="color:white" href="{{ path('home') }}">&lt;</a>
-												Edit Quote
-											</th>
-											<th></th>
-										</thead>
+									</tbody>
+									<tbody id="addQuote" class="addBody">
 										<tr>
 											<td>
 												Text
 											</td>
 											<td>
-												<input type="text" name="QuoteText" value="{{elem.text}}"/>
+												<input type="text" name="QuoteText"/>
 											</td>
 										</tr>
 										<tr>
@@ -87,21 +72,31 @@
 												Character
 											</td>
 											<td>
-												<input type="text" name="QuoteCharacter" value="{{elem.character}}"/>
+												<input type="text" name="QuoteCharacter"/>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Movie
+											</td>
+											<td>
+												<select name="movieId">
+													{% for item in movies %}
+														<option value="{{item.id}}">{{item.name}}</option>
+													{% endfor %}
+												</select>
+												{# <input type="text" name="QuoteCharacter"/> #}
 											</td>
 										</tr>
 										<tr>
 											<td colspan="2">
-												<input type="hidden" value="Quote" name="ent">
-												<input type="hidden" value="{{elem.id}}" name="id">
 												<input type="submit" value="Submit" class="editSubmit"/>
 											</td>
 										</tr>
-									</table>
-								</form>
-							{% endif %}
-
-						</footer>
+									</tbody>
+								</table>
+							</table>
+						</form>
 					</div>
 				</div>
 			</div>

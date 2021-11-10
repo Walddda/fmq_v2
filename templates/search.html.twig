@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<title>Tournament 1</title>
+		<style>
+			th {
+				color: white;
+			}
+		</style>
+		<link rel="stylesheet" href="{{ asset('stylesheet.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('main.css') }}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	</head>
+	<body>
+		<script src="{{ asset('ajax.js') }}" defer></script>
+		<footer>
+			<div class="limiter">
+				<div class="container-table100">
+					<div class="wrap-table100">
+						<div class="table100">
+							<br><br>
+							<table>
+								<thead>
+									<tr>
+										<th>
+											<a style="color:white" href="{{ path('home') }}">&lt;</a>
+											Search for Movie
+										</th>
+										<th><input type="text" name="searchQuery" placeholder="Search..." id="searchValue"/><span id="searchSubmit">?</span>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for item in data %}
+										<tr>
+											<td>
+												{{item.name}}
+											</td>
+											<td>
+												<input type="text" name="MovieName"/>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html></div></body></html>

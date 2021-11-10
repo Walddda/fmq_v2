@@ -28,7 +28,7 @@
 			</button>
 		</header>
 		<section class="animation">
-			<img class="paper-plane" src="{{ asset('plane.png') }}" alt="Paperplane">
+			<img class="paper-plane" src="{{ asset('CMS_Klappe.png') }}" alt="Paperplane">
 		</section>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous"></script>
@@ -57,8 +57,12 @@
 									<th>
 										Quote
 									</th>
-									<th class="column4"></th>
-									<th class="column4">+</th>
+									<th class="column4">
+										<a style="color:white" href="{{path('search')}}">?</a>
+									</th>
+									<th class="column4">
+										<a style="color:white" href="{{path('add')}}">+</a>
+									</th>
 								</thead>
 								{% for item in data %}
 									<tr>

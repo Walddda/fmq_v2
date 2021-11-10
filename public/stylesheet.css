@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 body {
-  background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+  background-image: linear-gradient(to top, #000000 0%, #d60303 100%);
   background-attachment: fixed;
 }
 header {
@@ -37,7 +37,7 @@ header h1 {
 #scrollStart {
   padding: 5px 15px 5px 15px;
   color: white;
-  background-color: #30b5c2;
+  background-color: #000000;
   border-radius: 50%;
   font-size: large;
 }
@@ -61,4 +61,19 @@ a {
 
 th {
   color: white;
+}
+
+.trigger {
+  padding: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.triggerActive {
+  background-color: #a492e2;
+  font-weight: normal;
+  cursor: help;
+}
+
+.addBody {
+  display: none;
 }

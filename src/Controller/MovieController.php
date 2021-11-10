@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Movie;
 use App\Entity\Quote;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,22 +49,49 @@ class MovieController extends AbstractController
      */
     public function showAll(): Response
     {
-        $res = "<h1>Results</h1><ul>";
         $movie = $this->getDoctrine()
             ->getRepository(Movie::class)
             // ->findAll();
             ->findBy(array(), array('name' => 'DESC'));
 
-        foreach ($movie as $m) {
-            $res .= "<li>" . $m->getName() . "</li>";
-            $quotes = $m->getQuotes();
-            foreach ($quotes as $q) {
-                $res .= "<li> ----" . $q->getText() . "</li>";
-            }
+        return $this->render('index.html.twig', [
+            'data' => $movie,
+        ]);
+        // return new Response($res);
+    }
+    /**
+     * @Route("/search/{term}", name="search", defaults={"term"=null})
+     */
+    public function showSearch($term): Response
+    {
+        $conn = array(
+            'driver' => 'pdo_sqlite',
+            'path' => $_ENV['DATABASE_URL'],
+        );
+        $entityManager = $this->getDoctrine()->getManager();
+        $connEM = \Doctrine\DBAL\DriverManager::getConnection($conn);
+        if ($term) {
+            // $movie = Doctrine::getTable('User')->createQuery('u')
+            //     ->where('column_name3 LIKE ?', '%search_key%')
+            //     ->execute();
+            $queryBuilder = new QueryBuilder($connEM);
+            $queryBuilder->select('*    ')
+                ->from('Movie', 'o')
+                ->where('o.name LIKE :name')
+                ->setParameter('name', '%' . $term . '%');
+            // $queryBuilder->execute();
+
+            $movie = $queryBuilder->execute();
+            dd($movie);
+        } else {
+            $movie = $this->getDoctrine()
+                ->getRepository(Movie::class)
+                // ->findAll();
+                ->findBy(array(), array('name' => 'DESC'));
         }
 
 
-        return $this->render('index.html.twig', [
+        return $this->render('search.html.twig', [
             'data' => $movie,
         ]);
         // return new Response($res);
@@ -182,5 +210,49 @@ class MovieController extends AbstractController
         }
 
         return new Response('success');
+    }
+
+    /** 
+     * @Route("/add", name="add")
+     */
+    public function showAdd(): Response
+    {
+        $movies = $this->getDoctrine()->getRepository(Movie::class)->findAll();
+
+        return $this->render('add.html.twig', [
+            'movies' => $movies,
+        ]);
+    }
+
+    /** 
+     * @Route("/addSub", name="addSubmit")
+     */
+    public function addSubmit(HttpFoundationRequest $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $ent = $request->request->get('ent');
+        $id = $request->request->get('movieId');
+        switch ($ent) {
+            case 'Movie':
+                $element = new Movie;
+
+                $element->setName($request->request->get('MovieName'));
+                $element->setReleaseYear($request->request->get('MovieYear'));
+                break;
+
+            case 'Quote':
+                $element = new Quote;
+
+                $element->setText($request->request->get('QuoteText'));
+                $element->setCharacter($request->request->get('QuoteCharacter'));
+                $element->setMovie($this->getDoctrine()->getRepository(Movie::class)->find($id));
+                $entityManager->persist($element);
+                $entityManager->flush();
+                break;
+        }
+        $entityManager->persist($element);
+        $entityManager->flush();
+
+        return new Response('successAdddd');
     }
 }

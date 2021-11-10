@@ -66,4 +66,42 @@ $(document).ready(function(){
             },
         });
     });
+    $("#addForm").submit(function (e) {
+        console.log($(this).serialize())
+        e.preventDefault();    
+        $.ajax({
+            url: '/addSub',
+            data: $(this).serialize(),
+            method: 'post',
+            success: function (data, reponse) {
+                console.log(data)
+            },
+            error: function () {
+            },
+        });
+    });
+
+    $('#movieTrigger').click(function (e) {
+        e.currentTarget.classList.add('triggerActive')
+        $('#quoteTrigger')[0].classList.remove('triggerActive')
+        $('#addMovie')[0].style.display ='contents';
+        $('#addQuote')[0].style.display ='none';
+        $('#ent')[0].value = 'Movie'
+        // console.log(e);
+        // console.log('e');
+    });
+    $('#quoteTrigger').click(function (e) {
+        e.currentTarget.classList.add('triggerActive')
+        console.log($('#movieTrigger'));
+        $('#movieTrigger')[0].classList.remove('triggerActive')
+        $('#addMovie')[0].style.display ='none';
+        $('#addQuote')[0].style.display ='contents';
+        $('#ent')[0].value = 'Quote'
+        // console.log('e');
+    });
+    $('#searchSubmit').click(function (e){
+        val = $('#searchValue')[0].value;
+        console.log($('#searchValue')[0])
+        window.location.assign('/search/'+val);
+    })
 })
