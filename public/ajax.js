@@ -14,14 +14,10 @@ $(document).ready(function(){
             success: function (data, reponse) {
     
              if(data == 'good' ){
-                //appear pop to say success blabla
-                console.log('gooog');
                 location.reload();
              }
             },
             error: function () {
-                //appear pop to say error blabla
-                console.log('baaab');
             },
         });
     
@@ -40,14 +36,10 @@ $(document).ready(function(){
             success: function (data, reponse) {
     
              if(data == 'good' ){
-                //appear pop to say success blabla
-                console.log('gooog');
                 location.reload();
              }
             },
             error: function () {
-                //appear pop to say error blabla
-                console.log('baaab');
             },
         });
     });
@@ -75,6 +67,8 @@ $(document).ready(function(){
             method: 'post',
             success: function (data, reponse) {
                 console.log(data)
+                console.log('added')
+                window.location.assign('/');
             },
             error: function () {
             },
